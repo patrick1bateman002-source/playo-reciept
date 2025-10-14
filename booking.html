@@ -3,240 +3,168 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Booking Receipt — Tennis</title>
+<title>Booking Confirmation — Playo style</title>
 <style>
   :root{
-    --bg:#f4f6f8;
+    --bg:#f3f6f7;
     --card:#ffffff;
+    --accent:#16a34a;
     --muted:#6b7280;
-    --accent:#0b5ed7;
-    --shadow: 0 8px 30px rgba(10,10,10,0.06);
     --radius:14px;
-    --card-padding:20px;
+    --shadow: 0 10px 30px rgba(15,23,42,0.06);
   }
-  body{font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;background:var(--bg);margin:0;padding:28px;display:flex;justify-content:center}
-  .wrap{max-width:820px;width:100%}
-  .header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-  .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#0b5ed7,#4aa3ff);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
-  .site-title{font-weight:700;font-size:18px}
-  .sub{color:var(--muted);font-size:13px}
-  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--card-padding);display:grid;grid-template-columns:1fr 360px;gap:18px;align-items:start}
-  /* responsive */
-  @media (max-width:880px){ .card{grid-template-columns:1fr} .card-right{order:2} }
-  .left h2{margin:0;font-size:16px}
-  .meta{margin-top:10px;color:var(--muted);font-size:14px}
-  .info-box{margin-top:14px;padding:12px;border-radius:10px;background:#fbfdff;border:1px solid #eef6ff}
-  .info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed #eee}
-  .info-row:last-child{border-bottom:none}
-  .label{color:var(--muted);font-size:13px}
+  html,body{height:100%;margin:0;font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Monsteratt", Monsteratt; background:var(--bg); color:#0f172a;}
+  .wrap{max-width:420px;margin:28px auto;padding:14px;}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;padding:14px;}
+  .topbar{display:flex;align-items:center;gap:12px;padding:6px 6px 12px 6px;}
+  .back{width:36px;height:36px;border-radius:10px;background:#eef2f7;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b6bd6}
+  .title{font-weight:700;font-size:18px}
+  .content{padding:8px 10px;}
+  .pill{display:inline-block;background:linear-gradient(180deg,#eafaf2,#dff6ec);color:var(--accent);padding:6px 10px;border-radius:999px;font-weight:700;font-size:13px}
+  .venue{color:var(--muted);margin-top:6px;font-size:14px}
+  .datetime{background:#fbfdff;border-radius:10px;padding:12px;margin-top:12px;text-align:center}
+  .datetime .date{font-weight:300}
+  .datetime .time{margin-top:6px;font-weight:400;font-size:18px}
+  .qr-wrap{display:flex;justify-content:center;padding:14px 0}
+  .qr-box{background:#fff;padding:12px;border-radius:12px;border:1px solid #eef2f6}
+  .booking-id{display:flex;align-items:center;justify-content:center;margin-top:8px;gap:8px;color:var(--muted)}
+  .booking-id .id{font-weight:300;color:#111}
+  .divider{height:12px}
+  .summary{background:var(--card);border-radius:12px;padding:12px;margin-top:12px;border:1px solid #f0f3f6}
+  .row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed #f1f5f9}
+  .grey-row {
+  background-color: #f3f4f6; /* light grey background */
+  color: #374151;            /* darker grey text */
+  padding: 8px 12px;
+  border-radius: 6px;        /* smooth edges */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 4px 0;             /* small vertical spacing */
+  }
+
+  .row:last-child{border-bottom:none}
+  .label{color:var(--muted);font-size:14px}
   .value{font-weight:700}
-  .booking-id{font-weight:800;font-size:18px}
-  .card-right{background:linear-gradient(180deg,#fff,#fbfbff);border-radius:12px;padding:18px;border:1px solid #eef2ff;display:flex;flex-direction:column;align-items:center;gap:12px}
-  .qr{background:white;padding:12px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.03)}
-  .breakdown{width:100%;margin-top:8px}
-  .breakdown .row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f2f5}
-  .breakdown .row.total{font-weight:800;font-size:16px}
-  .policies{font-size:13px;color:var(--muted);background:#fff;padding:12px;border-radius:10px;margin-top:12px;border:1px solid #f0f2f5}
-  .buttons{display:flex;gap:8px;margin-top:10px}
-  .btn{background:var(--accent);color:white;padding:8px 12px;border-radius:8px;text-decoration:none;border:none;cursor:pointer}
-  .btn.secondary{background:#eef2ff;color:var(--accent);font-weight:700}
-  .muted-small{font-size:12px;color:#8b949e}
-  .field-edit{display:inline-block;padding:2px 6px;border-radius:6px}
-  /* small screen adjustments */
-  @media (max-width:420px){ .card{padding:14px} .card-right{padding:12px} .booking-id{font-size:16px} }
+  .small{font-size:12px;color:var(--muted)}
+  .online-vert{position:absolute;left:-36px;top:120px;transform:rotate(-90deg);color:#dbeef0;font-weight:700;letter-spacing:2px}
+  /* Responsive */
+  @media(max-width:480px){
+    .wrap{padding:8px}
+  }
 </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="header">
-      <div class="logo">S</div>
-      <div>
-        <div class="site-title">Soundarya Sports Arena</div>
-        <div class="sub">Booking Receipt</div>
-      </div>
-    </div>
-
-    <div class="card" id="receiptCard">
-      <!-- LEFT: booking details -->
-      <div class="left">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div>
-            <div style="display:flex;align-items:center;gap:8px">
-              <div style="background:#e8f6ff;padding:6px 10px;border-radius:999px;font-weight:700;color:var(--accent)">Tennis</div>
-              <div class="muted-small">Online Booking Receipt</div>
-            </div>
-            <h2 contenteditable="false" id="venueTitle" style="margin-top:12px">Soundarya Sports Arena Sidedahalli</h2>
-            <div class="meta" id="venueSub">Court1 — Booking ID <span class="booking-id" id="bookingId">NXFLWZZZ</span></div>
-          </div>
-          <div style="text-align:right">
-            <div class="muted-small">Date</div>
-            <div class="value" id="dateText">02 September, Tuesday</div>
-            <div class="muted-small" style="margin-top:8px">Time</div>
-            <div class="value" id="timeText">5:00 PM - 6:00 PM</div>
-          </div>
+    <div class="card" id="receipt">
+      <div class="topbar">
+        <div class="back">&larr;</div>
+        <div>
+          <div class="title" id="sport">Soundarya S...</div>
+          <div class="small venue" id="venue">Soundarya Sports Arena Sidedahalli</div>
         </div>
-
-        <div class="info-box" style="margin-top:14px">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div class="label">Booked For</div>
-              <div style="font-weight:700">Tennis — Court1</div>
-            </div>
-            <div style="text-align:right">
-              <div class="label">Status</div>
-              <div style="font-weight:700;color:green">Confirmed</div>
-            </div>
-          </div>
-
-          <div style="margin-top:12px">
-            <div class="label">Payment Details</div>
-            <div class="muted-small" style="margin-top:8px">Breakdown</div>
-
-            <div class="info-row" style="margin-top:8px">
-              <div class="label">Court Price</div>
-              <div class="value" id="courtPrice">INR 200</div>
-            </div>
-            <div class="info-row">
-              <div class="label">Discount</div>
-              <div class="value" id="discount">INR 0</div>
-            </div>
-            <div class="info-row">
-              <div class="label">Convenience Fee</div>
-              <div class="value" id="convFee">INR 4.72</div>
-            </div>
-            <div class="info-row">
-              <div class="label">Fitness Cover</div>
-              <div class="value" id="fitness">INR 0</div>
-            </div>
-            <div class="info-row total" style="border-top:1px solid #eef2f5;margin-top:8px;padding-top:10px">
-              <div>Total Amount</div>
-              <div id="totalAmt">INR 194.72</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:8px;margin-top:12px;align-items:center">
-          <button class="btn" id="editBtn">Edit</button>
-          <button class="btn secondary" id="saveBtn">Download HTML</button>
-          <div style="margin-left:auto;color:var(--muted);font-size:13px">Booking receipt copy</div>
-        </div>
-
-        <div class="policies" style="margin-top:12px">
-          <div style="font-weight:700;margin-bottom:6px">Reschedule Policy</div>
-          <div class="muted-small">Rescheduling is allowed 2 hours prior to slot time. Rescheduling of a booking can be done only 2 times. Once rescheduled, booking cannot be cancelled.</div>
-          <div style="height:8px"></div>
-          <div style="font-weight:700;margin-bottom:6px">Cancellation Policy</div>
-          <div class="muted-small">0-2 hrs prior to slot: Cancellations not allowed. &gt;2 hrs prior: 15.0% of Gross Amount will be deducted as cancellation fee.</div>
+        <div style="flex:1"></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <!-- icons placeholders -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12h18" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
       </div>
 
-      <!-- RIGHT: QR & summary -->
-      <div class="card-right">
-        <div style="width:100%;text-align:center">
-          <div style="font-weight:700">Scan QR to view booking</div>
-          <div class="qr" id="qrContainer" style="margin-top:12px">
-            <!-- QR image inserted by JS -->
-            <img id="qrImg" alt="QR" style="width:180px;height:180px;border-radius:8px;background:white;padding:8px" />
+      <div class="content" style="position:relative;">
+        <div class="online-vert">ONLINE</div>
+
+        
+
+        <div class="datetime" id="datetime-block">
+	  <div id="date" class="date">Tennis</div>
+	  <div id="date" class="date">Soundarya Sports Arena Sidedahalli</div>
+          <div id="date" class="date">14th Oct Wednesday 2025</div>
+          <div id="time" class="time">05:30PM - 06:30PM - Court1</div>
+        </div>
+
+        <div class="qr-wrap">
+          <div class="qr-box">
+            <!-- QR will be generated into this container -->
+            <div id="qrcode" style="width:180px;height:180px;"></div>
           </div>
         </div>
 
-        <div class="breakdown">
-          <div class="row"><div class="label">Booking ID</div><div class="value" id="shortBooking">NXFLWZZZ</div></div>
-          <div class="row"><div class="label">Venue</div><div class="value" id="shortVenue">Soundarya Sports Arena</div></div>
-          <div class="row"><div class="label">Date & Time</div><div class="value" id="shortDT">02 Sep | 5:00 PM</div></div>
-          <div class="row total"><div class="label">Advance Paid</div><div class="value" id="advancePaid">INR 0</div></div>
+        <div class="booking-id">
+          <div class="small">Booking ID</div>
+          <div class="id" id="booking ID "> - NXFLWZZZ   &#9633;|</div>
+          <button id="copyBtn" style="border:none;background:transparent;cursor:pointer;font-size:16px"></button>
         </div>
 
-        <div style="width:100%;text-align:center;margin-top:6px">
-          <a class="btn secondary" id="downloadReceipt">Download PNG</a>
+        <div class="divider"></div>
+
+        <div class="summary">
+          <div style="font-weight:700;margin-bottom:8px">Total Amount INR 194.72</div>
+          <div class="row"><div class="label">Court Price</div><div class="value" id="court-price">INR 200</div></div>
+          <div class="row"><div class="label">Convenience Fee</div><div class="value" id="conv-fee">INR 4.72</div></div>
+          <div class="row"><div class="label">Discount/Karma availed</div><div class="value" id="discount">- INR 10</div></div>
+          <div class="row"><div class="label">Fitness Cover</div><div class="value" id="fitness">INR 0</div></div>
+	  <div class="row"><div class="label">Total Amount</div><div class="value" id="fitness">INR 194.72</div></div>
+	  	<div class="row grey-row"><div class="label">Advance Paid</div><div class="value" id="conv-fee">INR 194.72</div>
+</div>
+
+</div>
+
         </div>
+
       </div>
     </div>
   </div>
 
-<script>
-/* -- small JS to:
-   - generate a QR with compact metadata (so scanners can read booking)
-   - enable edit mode and download the current HTML as a file
-   - generate a simple PNG snapshot (using approach below)
-*/
-(function(){
-  // default data (you can set these values server-side or modify in DOM)
-  const data = {
-    bookingId: "NXFLWZZZ",
-    venue: "Soundarya Sports Arena Sidedahalli",
-    court: "Court1",
-    date: "02 September, Tuesday",
-    time: "5:00 PM - 6:00 PM",
-    courtPrice: "INR 200",
-    total: "INR 194.72"
-  };
+  <!-- QR library (client-side) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    // Target URL for the QR (as requested)
+    const targetUrl = "https://patrick1bateman002-source.github.io/playo-reciept/";
 
-  // fill fields
-  document.getElementById('bookingId').textContent = data.bookingId;
-  document.getElementById('shortBooking').textContent = data.bookingId;
-  document.getElementById('venueTitle').textContent = data.venue;
-  document.getElementById('shortVenue').textContent = "Soundarya Sports Arena";
-  document.getElementById('dateText').textContent = data.date;
-  document.getElementById('timeText').textContent = data.time;
-  document.getElementById('courtPrice').textContent = data.courtPrice;
-  document.getElementById('totalAmt').textContent = data.total;
-  document.getElementById('shortDT').textContent = "02 Sep | 5:00 PM";
-
-  // create compact metadata and QR using Google Chart API (no external libs)
-  const meta = {
-    bookingId: data.bookingId,
-    venue: data.venue,
-    date: data.date,
-    time: data.time
-  };
-  const metaStr = encodeURIComponent(JSON.stringify(meta));
-  const qrUrl = 'https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=' + metaStr + '&chld=L|1';
-  document.getElementById('qrImg').src = qrUrl;
-
-  // Edit toggling
-  let editing = false;
-  document.getElementById('editBtn').addEventListener('click', function(){
-    editing = !editing;
-    const editableEls = ['venueTitle','dateText','timeText','bookingId','courtPrice','totalAmt'];
-    editableEls.forEach(id=>{
-      const el = document.getElementById(id);
-      if(el) el.contentEditable = editing ? "true" : "false";
+    // Generate QR
+    const qrcodeEl = document.getElementById('qrcode');
+    // Clear if present
+    qrcodeEl.innerHTML = "";
+    new QRCode(qrcodeEl, {
+      text: targetUrl,
+      width: 180,
+      height: 180,
+      colorDark : "#000000",
+      colorLight : "#ffffff",
+      correctLevel : QRCode.CorrectLevel.H
     });
-    this.textContent = editing ? "Done" : "Edit";
-  });
 
-  // Download HTML (serializes current document)
-  document.getElementById('saveBtn').addEventListener('click', function(){
-    const full = '<!doctype html>\n' + document.documentElement.outerHTML;
-    const blob = new Blob([full], {type: 'text/html'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'booking_receipt.html';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  });
+    // Copy booking id button
+    document.getElementById('copyBtn').addEventListener('click', function(){
+      const id = document.getElementById('booking-id').innerText;
+      if(navigator.clipboard){
+        navigator.clipboard.writeText(id).then(()=> alert('Booking ID copied: ' + id));
+      } else {
+        alert('Copy: ' + id);
+      }
+    });
 
-  // Simple "download PNG" by using html2canvas if available; if not, fallback to opening print dialog
-  document.getElementById('downloadReceipt').addEventListener('click', function(e){
-    // try to use html2canvas if it exists
-    if(window.html2canvas){
-      window.html2canvas(document.getElementById('receiptCard')).then(canvas=>{
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = 'booking_receipt.png';
-        link.click();
+    // Optional: make some fields editable by double-click (if you want quick edits)
+    ['date','time','booking-id','court-price','conv-fee','discount','fitness'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.addEventListener('dblclick', ()=> {
+        el.contentEditable = true;
+        el.focus();
       });
-    } else {
-      // fallback: open print dialog
-      window.print();
-    }
-  });
+      el.addEventListener('blur', ()=> {
+        el.contentEditable = false;
+      });
+    });
 
-})();
-</script>
+    // Make the booking card image-friendly for screenshots (small tweak: remove outline on focus)
+    document.addEventListener('focusin', e=>{
+      if(e.target && e.target.contentEditable === "true"){
+        e.target.style.outline = "none";
+      }
+    });
+  </script>
 </body>
 </html>
+
