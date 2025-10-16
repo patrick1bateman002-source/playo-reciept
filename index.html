@@ -93,7 +93,7 @@
 
         <div class="booking-id">
           <div class="small">Booking ID</div>
-          <div class="id" id="booking ID "> - NXFLWZZZ   &#9633;|</div>
+          <div class="id" id="booking ID "contentEditable = true> - NXFLWZZZ   &#9633;|</div>
           <button id="copyBtn" style="border:none;background:transparent;cursor:pointer;font-size:16px"></button>
         </div>
 
@@ -147,7 +147,7 @@
     });
 
     // Optional: make some fields editable by double-click (if you want quick edits)
-    ['date','time','booking-id','court-price','conv-fee','discount','fitness'].forEach(id=>{
+    ['date','time','timed','booking-id','court-price','conv-fee','discount','fitness'].forEach(id=>{
       const el = document.getElementById(id);
       if(!el) return;
       el.addEventListener('dblclick', ()=> {
@@ -168,6 +168,7 @@
   </script>
 </body>
 </html>
+
 
 
 
